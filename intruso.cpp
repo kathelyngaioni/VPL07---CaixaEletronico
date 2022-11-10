@@ -1,46 +1,46 @@
 #include "intruso.hpp"
 #include <sstream>
 #include <vector>
+#define TAMSENHA 16
 
 void Intruso::set_senha_vazada(std::string vazou){
-entradas.insert(vazou);
+  entradas.insert(vazou);
 }
 std::string Intruso::crack_senha(){
+ 
+ std::string sequencia;
+ std::set<std::string>nova_sequencia;
+ std::vector<char> a;
 
-int associcao_caixa;
-std::string nova_associacao;
-std::string letras;
-std::istringstream stream_string;
-std::vector<std::string>sequencias;
-
-//percorrer o set e pegar a parte da associacao do caixa
-for(std::string _senha : entradas){
-stream_string = std::istringstream(_senha);
-stream_string >> associcao_caixa;
-stream_string >> letras;
-std::string associacao = std::to_string(associcao_caixa);
- 
-for(int i=0;i<letras.size();i++){
- if(letras[i]=='A') nova_associacao += associacao[0] + associacao[1];
- if(letras[i]=='B') nova_associacao += associacao[2] + associacao[3];
- if(letras[i]=='C') nova_associacao += associacao[4] + associacao[5];
- if(letras[i]=='D') nova_associacao += associacao[6] + associacao[7];
- if(letras[i]=='E') nova_associacao += associacao[8] + associacao[9];
- } 
+//reorganizando a sequencia da senha vazada
+ std::set<std::string>::iterator it;
+ for(it=entradas.begin();it!=entradas.end();it++){
+   for(int i=0;i<TAMSENHA;i++){
+    if((*it)[i]=='A'){a.push_back((*it)[0]);a.push_back((*it)[1]);}
+    if((*it)[i]=='B'){a.push_back((*it)[2]);a.push_back((*it)[3]);}
+    if((*it)[i]=='C'){a.push_back((*it)[4]);a.push_back((*it)[5]);}
+    if((*it)[i]=='D'){a.push_back((*it)[6]);a.push_back((*it)[7]);}
+    if((*it)[i]=='E'){a.push_back((*it)[8]);a.push_back((*it)[9]);}
+  }
+  for(int j=0;j<a.size();j++)sequencia+=a[j];
+  nova_sequencia.insert(sequencia);
+  a.clear();
+  sequencia.clear();
+ }
+ //reorganizando novamente
+ std::vector<std::string>new_sequencia;
+ for(int k=0;k<6;k++){
+  std::set<std::string>::iterator it;       
+  for(it=nova_sequencia.begin();it!=nova_sequencia.end();it++){
+    a.push_back((*it)[2*k]);
+   a.push_back((*it)[2*k+1]);
+  }
+  for(int u=0;u<a.size();u++)
+    sequencia += a[u];
+  new_sequencia.push_back(sequencia);
+  a.clear();
+  sequencia.clear();
 }
-sequencias.push_back(nova_associacao);
-std::string senha;
-std::vector<std::string>::iterator it;
-for(it=sequencias.begin();it!=sequencias.end();it++){
-  for(int k=0;k<12;k++){
-   if((*it)[2*k]==(*it++)[2*k])
-    senha += (*it)[2*k];
-     if((*it)[2*k]==(*it)[2*k+1])
-       senha += (*it)[2*k];
-     if((*it)[2*k+1]==(*it++)[2*k])
-     senha += (*it)[2*k];
-    if((*it)[2*k+1]==(*it)[2*k+1])
-     senha += (*it)[2*k];
-}
-return senha;
+ //comparando as new_sequencias
+return "";
 }
