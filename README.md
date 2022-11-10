@@ -46,3 +46,31 @@ Depois de criada a nova_sequencia vamos criar a segunda sequencia chamada new se
   a.clear();
   sequencia.clear();
 }
+
+A última parte do programa utiliza um contador para contar quantas vezes o mesmo numero aparece na sequencia. Se o numero aparece o mesmo número de vezes que a quantidade de entradas (entradas.size()), então esse é o número da senha. Por exemplo, a sequencia 3931 tem o contador {2,1,2,1} e o número da senha é 3; já que eu utilizei duas entradas para gerar essa sequencia. 
+0884 = {1,2,2,1}
+2484 = {1,2,1,2}
+1775 = {1,2,2,1}
+
+O codigo correspondente a essa lógica:
+for(int z=0;z<new_sequencia.size();z++){
+  sequencia = new_sequencia[z];
+  for(int w=0;w<6;w++){
+    for(int l=0;l<6;l++){
+      if(sequencia[w]==sequencia[l])
+        cont[w]++;  
+    }
+    if(cont[w]==entradas.size()){
+      a.push_back(sequencia[w]);
+      break;
+     }
+    }
+  sequencia.clear();
+  //zerando o contador
+  for(int m=0;m<n;m++)cont[m]=0;
+}
+for(int f=0;f<6;f++)
+  senha_vazada+=a[f];
+
+  return senha_vazada;
+}

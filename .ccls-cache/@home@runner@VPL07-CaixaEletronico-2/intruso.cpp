@@ -9,9 +9,12 @@ void Intruso::set_senha_vazada(std::string vazou){
 std::string Intruso::crack_senha(){
  
  std::string sequencia;
+ int n = 2 * entradas.size();
  std::set<std::string>nova_sequencia;
  std::vector<char> a;
-
+ std::string senha_vazada;
+ int cont[n];
+  
 //reorganizando a sequencia da senha vazada
  std::set<std::string>::iterator it;
  for(it=entradas.begin();it!=entradas.end();it++){
@@ -30,17 +33,37 @@ std::string Intruso::crack_senha(){
  //reorganizando novamente
  std::vector<std::string>new_sequencia;
  for(int k=0;k<6;k++){
-  std::set<std::string>::iterator it;       
-  for(it=nova_sequencia.begin();it!=nova_sequencia.end();it++){
-    a.push_back((*it)[2*k]);
-   a.push_back((*it)[2*k+1]);
-  }
-  for(int u=0;u<a.size();u++)
-    sequencia += a[u];
-  new_sequencia.push_back(sequencia);
-  a.clear();
-  sequencia.clear();
-}
+    std::set<std::string>::iterator it;
+    for(it=nova_sequencia.begin();it!=nova_sequencia.end();it++){
+      a.push_back((*it)[2*k]);
+      a.push_back((*it)[2*k+1]);
+    }
+    for(int u=0;u<a.size();u++)
+      sequencia += a[u];
+    new_sequencia.push_back(sequencia);
+    a.clear();
+    sequencia.clear();
+ }
  //comparando as new_sequencias
-return "";
+
+for(int z=0;z<new_sequencia.size();z++){
+  sequencia = new_sequencia[z];
+  for(int w=0;w<6;w++){
+    for(int l=0;l<6;l++){
+      if(sequencia[w]==sequencia[l])
+        cont[w]++;  
+    }
+    if(cont[w]==entradas.size()){
+      a.push_back(sequencia[w]);
+      break;
+     }
+    }
+  sequencia.clear();
+  //zerando o contador
+  for(int m=0;m<n;m++)cont[m]=0;
+}
+for(int f=0;f<6;f++)
+  senha_vazada+=a[f];
+
+  return senha_vazada;
 }
